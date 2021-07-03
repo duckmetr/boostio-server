@@ -23,8 +23,10 @@ app.get('/tasks', (_, res) => {
   res.status(200).json(tasks)
 })
 
-app.get('/orders', (req, res) => {
+app.post('/orders', (req, res) => {
   const { username } = req.body
+
+  console.log(username)
 
   const orders = tasks.filter(task => task.username === username)
 
@@ -48,11 +50,11 @@ app.post('/tasks/:id/like', (req, res) => {
   res.status(200).json({result: 'liked'})
 })
 
-app.post('/tasks/like', (req, res) => {
+app.post('/tasks/like', (_, res) => {
   res.status(200).json({result: 'liked'})
 })
 
-app.delete('/tasks/delete', (req, res) => {
+app.post('/tasks/delete', (_, res) => {
   res.status(200).json({result: 'deleted'})
 })
 
