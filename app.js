@@ -23,8 +23,10 @@ app.get('/tasks', (_, res) => {
   res.status(200).json(tasks)
 })
 
-app.get('/orders', (_, res) => {
-  const orders = tasks.filter(task => task.username === 'auf.6.9')
+app.get('/orders', (req, res) => {
+  const { username } = req.body
+
+  const orders = tasks.filter(task => task.username === username)
 
   res.status(200).json(orders)
 })
