@@ -45,5 +45,3 @@ export async function likeTask(req, res) {
     console.log(error)
   }
 }
-
-// {mediaId, username, displayUrl, likes, whoLiked: [], completed: false}
