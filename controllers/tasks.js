@@ -5,7 +5,7 @@ export async function fetchTasks(req, res) {
   const LIMIT = 20
 
   try {
-    const tasks = await Task.find({ username: { $ne: username }, completed: false }).limit(LIMIT).sort({ createdAt: 1 })
+    const tasks = await Task.find({ username: { $ne: username }, whoLiked: { $ne: username }, completed: false }).limit(LIMIT).sort({ createdAt: 1 })
 
     res.status(200).json({ tasks })
   } catch (error) {    
