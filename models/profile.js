@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 const profileSchema = mongoose.Schema({
+  profile_pic_url: String,
   username: String,
   posts: {type: String, default: 0},
   followers: {type: String, default: 0},
