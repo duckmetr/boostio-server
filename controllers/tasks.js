@@ -1,11 +1,12 @@
 import Task from '../models/tasks.js'
+import Profile from '../models/profile.js'
 
 export async function fetchTasks(req, res) {
   const { username } = req.body
   const LIMIT = 20
 
   try {
-    const tasks = await Task.find({ username: { $ne: username }, whoLiked: { $ne: username }, completed: false }).limit(LIMIT).sort({ createdAt: 1 })
+    const tasks = await Task.find({ username: {$ne: username}, whoLiked: {$ne: username}, completed: false }).limit(LIMIT).sort({ createdAt: 1 })
 
     res.status(200).json({ tasks })
   } catch (error) {    
@@ -15,7 +16,6 @@ export async function fetchTasks(req, res) {
 
 export async function createTask(req, res) {
   const {mediaId, username, displayUrl, likes} = req.body
-
   const newTask = new Task({mediaId, username, displayUrl, likes, createdAt: new Date().toISOString()})
 
   try {
@@ -29,16 +29,15 @@ export async function createTask(req, res) {
 
 export async function likeTask(req, res) {
   const { mediaId, username } = req.body
+  const incCoins = 1
 
   try {
-    const task = await Task.find({mediaId})
+    const updatedTask = await Task.findOneAndUpdate({mediaId}, {$addToSet: {whoLiked: username}}, {new: true})
+    if (updatedTask.whoLiked.length >= updatedTask.likes) await updatedTask.updateOne({completed: true}).exec()
 
-    task[0].whoLiked.includes(username) || task[0].whoLiked.push(username)
-    task[0].whoLiked.length >= task[0].likes ? task[0].completed = true : null
+    await Profile.findOneAndUpdate({username}, {$inc: {'coins': incCoins}})
 
-    const updatedTask = await Task.findOneAndUpdate({mediaId}, task[0], {new: true})
-
-    res.status(200).json(updatedTask)
+    res.status(200).json({message: 'task liked'})
   } catch (error) {
     res.status(500).json({message: 'Something went wrong'})
     
