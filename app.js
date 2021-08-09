@@ -24,5 +24,5 @@ app.use('/orders', ordersRoutes)
 app.get('/', (_, res) => res.send('hello gusi'))
 
 mongoose.connect(CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
-  .then(() => app.listen(PORT, () => console.log('server is runing..')))
+  .then(() => app.listen(PORT, () => console.log(`server is runing on http://localhost:${PORT}`)))
   .catch((error) => console.log(error.message))
