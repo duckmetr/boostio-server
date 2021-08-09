@@ -3,15 +3,15 @@ import mongoose from 'mongoose'
 const profileSchema = mongoose.Schema({
   profile_pic_url: String,
   username: String,
-  posts: {type: String, default: 0},
-  followers: {type: String, default: 0},
-  following: {type: String, default: 0},
-  coins: {type: String, default: 0},
-  orders: {type: String, default: 0},
+  posts: {type: Number, default: 0},
+  followers: {type: Number, default: 0},
+  following: {type: Number, default: 0},
+  coins: {type: Number, default: 0, min: 0, max: 1000000},
+  orders: {type: Number, default: 0, min: 0, max: 1000000},
   likes: {type: String, default: '∞'},
   createdAt: {type: Date, default: new Date()}
 })
 
-const ProfileModel = mongoose.model('users', profileSchema)
+const Profile = mongoose.model('users', profileSchema)
 
-export default ProfileModel
+export default Profile
