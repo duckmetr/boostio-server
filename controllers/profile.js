@@ -22,7 +22,7 @@ export async function fetchProfile(req, res) {
 
   try {
     const profile = await Profile.findOne({username})
-    if (!profile) return res.status(404).json({message: "User doesn't exist"})
+    if (!profile) return res.status(404).json({message: 'User doesn\'t exist'})
 
     res.status(200).json({profile})
   } catch (err) {
