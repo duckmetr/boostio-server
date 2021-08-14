@@ -17,9 +17,11 @@ export async function fetchTasks(req, res) {
 export async function createTask(req, res) {
   const {mediaId, username, displayUrl, likes} = req.body
   const newTask = new Task({mediaId, username, displayUrl, likes, createdAt: new Date().toISOString()})
+  const amount = likes * 2
 
   try {
     await newTask.save()
+    await Profile.findOneAndUpdate({username}, {$inc: {'coins': -amount}})
 
     res.status(201).json(newTask)
   } catch (error) {
