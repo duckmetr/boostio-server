@@ -12,3 +12,15 @@ export async function fetchOrders(req, res) {
     res.status(404).json({message: error.message})
   }
 }
+
+export async function deleteOrder(req, res) {
+  const { username, mediaId } = req.body
+
+  try {
+    await Task.findOneAndDelete({ username, mediaId })
+
+    res.status(200).json('order deleted')
+  } catch (error) {    
+    res.status(404).json({message: error.message})
+  }
+}
