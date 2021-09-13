@@ -12,7 +12,7 @@ export const createProfile = async (req, res) => {
   try {
     const oldUser = await User.findOne({username})
     if (oldUser) {
-      return res.status(400).json({message: 'User already exists', token})
+      return res.status(200).json({message: 'User already exists', token})
     } else {
       const result = await User.create({username, createdAt: new Date().toISOString()})
       return res.status(201).json({result, token})
