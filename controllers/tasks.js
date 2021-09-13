@@ -1,8 +1,8 @@
 import Task from '../models/tasks.js'
-import Profile from '../models/profile.js'
+import User from '../models/user.js'
 
 export async function fetchTasks(req, res) {
-  const { username } = req.body
+  const { username } = req
   const LIMIT = 20
 
   try {
@@ -15,13 +15,14 @@ export async function fetchTasks(req, res) {
 }
 
 export async function createTask(req, res) {
-  const {mediaId, username, displayUrl, likes} = req.body
+  const { username } = req
+  const {mediaId, displayUrl, likes} = req.body
   const newTask = new Task({mediaId, username, displayUrl, likes, createdAt: new Date().toISOString()})
   const amount = likes * 2
 
   try {
     await newTask.save()
-    await Profile.findOneAndUpdate({username}, {$inc: {'coins': -amount}})
+    await User.findOneAndUpdate({username}, {$inc: {'coins': -amount}})
 
     res.status(201).json(newTask)
   } catch (error) {
@@ -30,19 +31,19 @@ export async function createTask(req, res) {
 }
 
 export async function likeTask(req, res) {
-  const { mediaId, username } = req.body
+  const { username } = req
+  const { mediaId } = req.body
   const incCoins = 1
 
   try {
     const updatedTask = await Task.findOneAndUpdate({mediaId}, {$addToSet: {whoLiked: username}}, {new: true})
     if (updatedTask.whoLiked.length >= updatedTask.likes) await updatedTask.updateOne({completed: true}).exec()
 
-    await Profile.findOneAndUpdate({username}, {$inc: {'coins': incCoins}})
+    await User.findOneAndUpdate({username}, {$inc: {'coins': incCoins}})
 
     res.status(200).json({message: 'task liked'})
   } catch (error) {
     res.status(500).json({message: 'Something went wrong'})
-    
     console.log(error)
   }
 }

@@ -1,7 +1,7 @@
 import Task from '../models/tasks.js'
 
 export async function fetchOrders(req, res) {
-  const { username } = req.body
+  const { username } = req
   const LIMIT = 100
 
   try {
@@ -14,7 +14,8 @@ export async function fetchOrders(req, res) {
 }
 
 export async function deleteOrder(req, res) {
-  const { username, mediaId } = req.body
+  const { username } = req
+  const { mediaId } = req.body
 
   try {
     await Task.findOneAndDelete({ username, mediaId })
