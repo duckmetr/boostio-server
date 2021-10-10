@@ -14,6 +14,18 @@ export async function fetchTasks(req, res) {
   }
 }
 
+export async function fetchTask(req, res) {
+  const { username } = req
+
+  try {
+    const task = await Task.find({ username: {$ne: username}, whoLiked: {$ne: username}, completed: false }).limit(1)
+
+    res.status(200).json({ task })
+  } catch (error) {    
+    res.status(404).json({message: error.message})
+  }
+}
+
 export async function createTask(req, res) {
   const { username } = req
   const {mediaId, displayUrl, likes} = req.body

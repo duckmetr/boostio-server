@@ -1,6 +1,7 @@
 import express from 'express'
 import { fetchProfile, createProfile, signin, signup } from '../controllers/user.js'
 import auth from '../middleware/auth.js'
+import check from '../middleware/check.js'
 
 const router = express.Router()
 
